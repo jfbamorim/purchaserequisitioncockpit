@@ -1,0 +1,79 @@
+<mvc:View controllerName="purchaserequestlist.controller.Detail"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core"
+    xmlns:layout="sap.ui.layout"
+    xmlns:form="sap.ui.layout.form">
+
+    <Page title="Purchase Requisition Detail" showNavButton="true" navButtonPress=".onNavBack">
+        <content>
+            <Panel headerText="General Information" class="sapUiSmallMargin">
+                <form:SimpleForm editable="false" layout="ResponsiveGridLayout">
+                    <form:content>
+                        <Label text="PR Number"/>
+                        <Text text="{Banfn}"/>
+
+                        <Label text="Description"/>
+                        <Text text="{Txz01}"/>
+
+                        <Label text="Status"/>
+                        <ObjectStatus
+                            text="{path: 'Statu', formatter: '.formatter.statusText'}"
+                            state="{path: 'Statu', formatter: '.formatter.formatStatusState'}"/>
+
+                        <Label text="Requisitioner"/>
+                        <Text text="{Afnam}"/>
+
+                        <Label text="Creation Date"/>
+                        <Text text="{path: 'Badat', formatter: '.formatter.formatDate'}"/>
+
+                        <Label text="Plant"/>
+                        <Text text="{Reswk}"/>
+
+                        <Label text="Purchase Org."/>
+                        <Text text="{Ekorg}"/>
+
+                        <Label text="Priority"/>
+                        <Text text="{path: 'Dringlichkeit', formatter: '.formatter.priorityText'}"/>
+
+                        <Label text="Notes"/>
+                        <Text text="{Notes}"/>
+                    </form:content>
+                </form:SimpleForm>
+            </Panel>
+
+            <!-- ITENS -->
+            <Panel headerText="Items" class="sapUiSmallMargin">
+                <Table items="{ToItems}">
+                    <columns>
+                        <Column><Text text="Item"/></Column>
+                        <Column><Text text="Material"/></Column>
+                        <Column><Text text="Description"/></Column>
+                        <Column><Text text="Quantity"/></Column>
+                        <Column><Text text="Unit"/></Column>
+                        <Column><Text text="Delivery Date"/></Column>
+                        <Column><Text text="Cost Center"/></Column>
+                        <Column><Text text="Price"/></Column>
+                        <Column><Text text="Currency"/></Column>
+                    </columns>
+                    <items>
+                        <ColumnListItem>
+                            <cells>
+                                <Text text="{Bnfpo}"/>
+                                <Text text="{Matnr}"/>
+                                <Text text="{Txz01}"/>
+                                <Text text="{Menge}"/>
+                                <Text text="{Meins}"/>
+                                <Text text="{path: 'Lfdat', formatter: '.formatter.formatDate'}"/>
+                                <Text text="{Kostl}"/>
+                                <Text text="{Preis}"/>
+                                <Text text="{Waers}"/>
+                            </cells>
+                        </ColumnListItem>
+                    </items>
+                </Table>
+            </Panel>
+
+        </content>
+    </Page>
+</mvc:View>

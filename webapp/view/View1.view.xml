@@ -1,0 +1,64 @@
+<mvc:View controllerName="purchaserequestlist.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc" displayBlock="true"
+    xmlns="sap.m"
+    xmlns:core="sap.ui.core">
+    <Page id="page" title="{i18n>title}">
+    <subHeader>
+            <Bar>
+                <contentLeft>
+                    <Input id="filterBanfn" placeholder="PR Number" width="12rem" />
+                    <Input id="filterAfnam" placeholder="Requester" width="12rem" />
+                    <Input id="filterRsewk" placeholder="Plant" width="8rem" />
+                    <Input id="filterEkorg" placeholder="Purchase Org." width="8rem" />
+                    <MultiComboBox  id="filterDringlichkeit" width="12rem"
+                                    placeholder="Selecionar prioridade...">
+                                    <core:Item key="1" text="Alta"/>
+                                    <core:Item key="2" text="Média"/>
+                                    <core:Item key="3" text="Baixa"/>
+                    </MultiComboBox>
+                    <MultiComboBox id="filterStatu" width="12rem"
+                                    placeholder="Select status...">
+                                    <core:Item key="N" text="Aberta"/>
+                                    <core:Item key="B" text="Em processamento"/>
+                                    <core:Item key="A" text="Aprovada"/>
+                                    <core:Item key="G" text="Convertida em PO"/>
+                                    <core:Item key="S" text="Suspensa"/>
+                                    <core:Item key="X" text="Cancelada"/>
+                    </MultiComboBox>
+                    <Button text="Search" press="onSearch" type="Emphasized"/>
+                    <Button text="Clear" press="onClear"/>
+                </contentLeft>
+            </Bar>
+        </subHeader>
+        <Table id="prTable" items="{/PurchaseRequisitionHeaderSet}" mode="SingleSelectMaster" itemPress=".onItemPress">
+            <columns>
+                <Column > <Text text="PR Number" /> </Column>
+                <Column> <Text text="PR Title" /> </Column>
+                <Column> <Text text="PR Status" /> </Column>
+                <Column> <Text text="Creation User" /> </Column>
+                <Column> <Text text="Creation Date" /> </Column>
+                <Column> <Text text="Plant" /> </Column>
+                <Column> <Text text="Purchase Org." /> </Column>
+                <Column> <Text text="PR Priority" /> </Column>
+                <Column> <Text text="Nr. Items" /> </Column>
+            </columns>
+            <items>
+                <ColumnListItem type="Navigation">
+                    <cells>
+                        <Text text="{Banfn}" />
+                        <Text text="{Txz01}" />
+                        <ObjectStatus text="{path: 'Statu', formatter: '.formatter.statusText'}"
+                                      state="{path: 'Statu', formatter: '.formatter.formatStatusState'}"/>
+                        <Text text="{Afnam}" />
+                        <Text text="{path: 'Badat',
+                                     type: 'sap.ui.model.type.Date',
+                                     formatOptions: { pattern: 'dd/MM/yyyy' } }" />
+                        <Text text="{Reswk}" />
+                        <Text text="{Ekorg}" />
+                        <ObjectStatus text="{path: 'Dringlichkeit', formatter: '.formatter.priorityText'}" />
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+    </Page>
+</mvc:View>
