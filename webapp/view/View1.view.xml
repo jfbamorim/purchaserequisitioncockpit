@@ -6,17 +6,17 @@
     <subHeader>
             <Bar>
                 <contentLeft>
-                    <Input id="filterBanfn" placeholder="PR Number" width="12rem" />
+                    <Input id="filterBanfn" placeholder="PR Number" width="10rem" />
                     <Input id="filterAfnam" placeholder="Requester" width="12rem" />
-                    <Input id="filterRsewk" placeholder="Plant" width="8rem" />
-                    <Input id="filterEkorg" placeholder="Purchase Org." width="8rem" />
-                    <MultiComboBox  id="filterDringlichkeit" width="12rem"
+                    <Input id="filterRsewk" placeholder="Plant" width="6rem" />
+                    <Input id="filterEkorg" placeholder="Purchase Org." width="6rem" />
+                    <MultiComboBox  id="filterDringlichkeit" width="8rem"
                                     placeholder="Selecionar prioridade...">
                                     <core:Item key="1" text="Alta"/>
                                     <core:Item key="2" text="Média"/>
                                     <core:Item key="3" text="Baixa"/>
                     </MultiComboBox>
-                    <MultiComboBox id="filterStatu" width="12rem"
+                    <MultiComboBox id="filterStatu" width="8rem"
                                     placeholder="Select status...">
                                     <core:Item key="N" text="Aberta"/>
                                     <core:Item key="B" text="Em processamento"/>
@@ -28,6 +28,9 @@
                     <Button text="Search" press="onSearch" type="Emphasized"/>
                     <Button text="Clear" press="onClear"/>
                 </contentLeft>
+                <contentRight>
+                    <Button text="Create PR" press=".onCreatePR" type="Emphasized" icon="sap-icon://add"/>
+                </contentRight>
             </Bar>
         </subHeader>
         <Table id="prTable" items="{/PurchaseRequisitionHeaderSet}" mode="SingleSelectMaster" itemPress=".onItemPress">

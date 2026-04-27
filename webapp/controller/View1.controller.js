@@ -2,9 +2,11 @@ sap.ui.define([
     "sap/ui/core/mvc/Controller",
     "purchaserequestlist/model/formatter",
     "sap/ui/model/Filter",
-    "sap/ui/model/FilterOperator"
+    "sap/ui/model/FilterOperator",
+    "sap/ui/core/Fragment",
+    'sap/ui/model/json/JSONModel'
 ],
-function (Controller, formatter, Filter, FilterOperator) {
+function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
     "use strict";
 
     return Controller.extend("purchaserequestlist.controller.View1", {
@@ -87,6 +89,98 @@ function (Controller, formatter, Filter, FilterOperator) {
             this.getOwnerComponent().getRouter().navTo("detail", {
                 Banfn: sBanfn
             });
+        },
+
+        onCreatePR: function(){
+            var oView = this.getView();
+
+            var oModel = new JSONModel({
+                header: {
+                    Txz01: "",
+                    Bsart: "NB",
+                    Reswk: "",
+                    Ekorg: "",
+                    Dringlichkeit: "",
+                    Notes: ""
+                },
+                plants: [
+                    { key: "1000", text: "Plant 1000 — Lisboa" },
+                    { key: "2000", text: "Plant 2000 — Porto" },
+                    { key: "3000", text: "Plant 3000 — Faro" }
+                ],
+                purchGroups: [
+                    { key: "B01", text: "B01 — Escritório" },
+                    { key: "B02", text: "B02 — Informática" },
+                    { key: "B03", text: "B03 — Manutenção" },
+                    { key: "B04", text: "B04 — Laboratório" }
+                ]
+            });
+
+            if(!this._oDialog){
+                Fragment.load({
+                    id: oView.getId(),
+                    name: "purchaserequestlist.view.fragments.CreatePRDialog",
+                    controller: this
+                }).then(function(oDialog){
+                    this._oDialog = oDialog;
+                    oView.addDependent(this._oDialog);
+                    this._oDialog.setModel(oModel, "createModel");
+                    this._oDialog.open();
+                }.bind(this));
+            } else{
+                this._oDialog.setModel(oModel, "createModel");
+                this._oDialog.open();
+            }
+        },
+
+        onCancelPR: function() {
+            this._oDialog.close();
+        },
+
+        onPlantValueHelp: function(){
+            var oView = this.getView();
+            var oModel = this._oDialog.getModel("createModel");
+            var aPlants = oModel.getProperty("/plants");
+
+            var oSelectDialog = new sap.m.SelectDialog({
+                title: "Select Plant",
+                items: aPlants.map(function(oPlant) {
+                    return new sap.m.StandardListItem({
+                        title: oPlant.key,
+                        description: oPlant.text
+                    });
+                }),
+                confirm: function(oEvent) {
+                    var oSelected = oEvent.getParameter("selectedItem");
+                    oModel.setProperty("/header/Reswk", oSelected.getTitle());
+                },
+                cancel: function() {}
+            });
+
+            oSelectDialog.open();
+        },
+
+        onPurchaseGroupValueHelp: function(){
+            var oView = this.getView();
+            var oModel = this._oDialog.getModel("createModel");
+            var aPurchGroup = oModel.getProperty("/purchGroups");
+
+            var oSelectDialog = new sap.m.SelectDialog({
+                title: "Select Plant",
+                items: aPurchGroup.map(function(aPurchGroup) {
+                    return new sap.m.StandardListItem({
+                        title: aPurchGroup.key,
+                        description: aPurchGroup.text
+                    });
+                }),
+                confirm: function(oEvent) {
+                    var oSelected = oEvent.getParameter("selectedItem");
+                    oModel.setProperty("/header/Ekorg", oSelected.getTitle());
+                },
+                cancel: function() {}
+            });
+
+            oSelectDialog.open();
         }
     });
 });

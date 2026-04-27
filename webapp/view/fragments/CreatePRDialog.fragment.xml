@@ -1,0 +1,35 @@
+<core:FragmentDefinition
+    xmlns:core="sap.ui.core"
+    xmlns="sap.m"
+    xmlns:form="sap.ui.layout.form"
+    xmlns:layout="sap.ui.layout">
+    <Dialog contentHeight="70%"
+        contentWidth="60%"
+        resizable="true"
+        draggable="true">
+        <form:SimpleForm id="simplePRForm" editable="true" title="Create PR" layout="ResponsiveGridLayout" singleContainerFullSize="false"> 
+            <form:content>
+				<Label text="Description" />
+				<Input id="prDescription" value="{createModel>/header/Txz01}"/>
+				<Label text="PR Type" />
+				<Input id="prType" value="{createModel>/header/Bsart}" editable="false"/>
+				<Label text="Plant destiny" />
+                <Input value="{createModel>/header/Reswk}" showValueHelp="true" valueHelpRequest=".onPlantValueHelp"/>
+				<Label text="Purchasing Group" />
+				<Input id="purchasingGroup" value="{createModel>/header/Ekorg}" showValueHelp="true" valueHelpRequest=".onPurchaseGroupValueHelp"/>
+				<Label text="PR Priority" />
+                <Select selectedKey="{createModel>/header/Dringlichkeit}">
+                    <core:Item key="1" text="Alta"/>
+                    <core:Item key="2" text="Média"/>
+                    <core:Item key="3" text="Baixa"/>
+                </Select>
+				<Label text="PR Notes" />
+				<Input id="prNotes" value="{createModel>/header/Notes}"/>
+            </form:content>
+        </form:SimpleForm>
+        <buttons>
+            <Button text="Submit" type="Emphasized" press=".onSubmitPR"/>
+            <Button text="Cancel" press=".onCancelPR"/>
+        </buttons>
+    </Dialog>
+</core:FragmentDefinition>
