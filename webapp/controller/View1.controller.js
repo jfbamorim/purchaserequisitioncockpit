@@ -66,8 +66,6 @@ function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
         },
 
         onClear: function(){
-            console.log("entrou")
-
             var aFilter = [];
 
             this.byId("filterBanfn").setValue("");
@@ -113,6 +111,8 @@ function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
                     { key: "B02", text: "B02 — Informática" },
                     { key: "B03", text: "B03 — Manutenção" },
                     { key: "B04", text: "B04 — Laboratório" }
+                ],
+                items: [
                 ]
             });
 
@@ -138,7 +138,6 @@ function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
         },
 
         onPlantValueHelp: function(){
-            var oView = this.getView();
             var oModel = this._oDialog.getModel("createModel");
             var aPlants = oModel.getProperty("/plants");
 
@@ -161,7 +160,6 @@ function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
         },
 
         onPurchaseGroupValueHelp: function(){
-            var oView = this.getView();
             var oModel = this._oDialog.getModel("createModel");
             var aPurchGroup = oModel.getProperty("/purchGroups");
 
@@ -181,6 +179,68 @@ function (Controller, formatter, Filter, FilterOperator, Fragment, JSONModel) {
             });
 
             oSelectDialog.open();
+        },
+
+        onAddItem: function() {
+            var oModel = this._oDialog.getModel("createModel");
+            var aItems = oModel.getProperty("/items");
+            aItems.push({
+                Bnfpo: String((aItems.length + 1) * 10).padStart(5, "0"),
+                Txz01: "", Matnr: "", Menge: "", Meins: "",
+                Lfdat: "", Kostl: "", Matkl: "", Lifnr: "",
+                Preis: "", Waers: ""
+            });
+            oModel.setProperty("/items", aItems);
+        },
+
+        onSubmitPR: function(){
+            var oModel = this._oDialog.getModel("createModel");
+            var oHeader = oModel.getProperty("/header");
+            console.log(oModel.getData());
+            var oItems = oModel.getProperty("/items");
+
+            if(!oHeader.Txz01){
+                sap.m.MessageToast.show("Description is required.");
+                return;
+            }
+
+            if (oItems.length === 0) {
+                sap.m.MessageToast.show("At least one item is required.");
+                return;
+            }
+
+            this._createHeader(oHeader, oItems);
+        },
+
+        _createHeader: function(oHeader, oItems){
+            var oDataModel = this.getView().getModel();
+            oDataModel.create("/PurchaseRequisitionHeaderSet", oHeader, {
+                success: function(oCreated) {
+                    this._createItems(oCreated.Banfn, oItems);
+                }.bind(this),
+                error: function() {
+                    sap.m.MessageToast.show("Error creating PR.");
+                }
+            });
+        },
+
+        _createItems: function(sBanfn, aItems) {
+            var oODataModel = this.getView().getModel();
+            var iCount = 0;
+            aItems.forEach(function(oItem) {
+                oItem.Banfn = sBanfn;
+                oODataModel.create("/PurchaseRequisitionItemSet", oItem, {
+                    success: function() {
+                        iCount++;
+                        if (iCount === aItems.length) {
+                            // Todos os itens criados
+                            sap.m.MessageToast.show("PR created successfully.");
+                            this._oDialog.close();
+                            this.getView().getModel().refresh();
+                        }
+                    }.bind(this)
+                });
+            }.bind(this));
         }
     });
 });

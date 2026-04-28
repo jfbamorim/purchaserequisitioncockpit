@@ -3,8 +3,8 @@
     xmlns="sap.m"
     xmlns:form="sap.ui.layout.form"
     xmlns:layout="sap.ui.layout">
-    <Dialog contentHeight="70%"
-        contentWidth="60%"
+    <Dialog contentHeight="75%"
+        contentWidth="85%"
         resizable="true"
         draggable="true">
         <form:SimpleForm id="simplePRForm" editable="true" title="Create PR" layout="ResponsiveGridLayout" singleContainerFullSize="false"> 
@@ -27,6 +27,37 @@
 				<Input id="prNotes" value="{createModel>/header/Notes}"/>
             </form:content>
         </form:SimpleForm>
+        <Table id="prItens" items="{createModel>/items}">
+            <columns>
+                <Column> <Text text="Item Description" /> </Column>
+                <Column> <Text text="Material" /> </Column>
+                <Column> <Text text="Quantity" /> </Column>
+                <Column> <Text text="Unit" /> </Column>
+                <Column> <Text text="Delivery Date" /> </Column>
+                <Column> <Text text="Cost Center" /> </Column>
+                <Column> <Text text="Material Group" /> </Column>
+                <Column> <Text text="Preferred Vendor" /> </Column>
+                <Column> <Text text="Estimated Price" /> </Column>
+                <Column> <Text text="Currency" /> </Column>
+            </columns>
+            <items>
+                <ColumnListItem editable="true">
+                    <cells>
+                        <Input value="{createModel>Txz01}"/>
+                        <Input value="{createModel>Matnr}"/>
+                        <Input value="{createModel>Menge}"/>
+                        <Input value="{createModel>Meins}"/>
+                        <Input value="{createModel>Lfdat}"/>
+                        <Input value="{createModel>Kostl}"/>
+                        <Input value="{createModel>Matkl}"/>
+                        <Input value="{createModel>Lifnr}"/>
+                        <Input value="{createModel>Preis}"/>
+                        <Input value="{createModel>Waers}"/>
+                    </cells>
+                </ColumnListItem>
+            </items>
+        </Table>
+        <Button text="+ Add Item" press=".onAddItem" type="Ghost"/>
         <buttons>
             <Button text="Submit" type="Emphasized" press=".onSubmitPR"/>
             <Button text="Cancel" press=".onCancelPR"/>
